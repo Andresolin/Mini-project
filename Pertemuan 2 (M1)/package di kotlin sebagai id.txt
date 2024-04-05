@@ -1,4 +1,0 @@
-package di kotlin sebagai id
-sp skala  pixel untuk android jangan pakai format lain
-state = data, nilai
-event = kejadian

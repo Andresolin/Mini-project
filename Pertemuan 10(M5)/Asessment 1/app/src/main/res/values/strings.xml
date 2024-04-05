@@ -15,4 +15,6 @@
     <string name="reset">Reset</string>
     <string name="total_price">Silakan bayar: Rp %1$d</string>
     <string name="share">Bagikan</string>
+
+    <string name="tentang_warung">Tentang Warung</string>
 </resources>

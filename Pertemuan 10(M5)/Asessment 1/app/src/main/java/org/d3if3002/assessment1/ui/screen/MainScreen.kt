@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -93,13 +94,13 @@ fun MainScreen(navController: NavHostController) {
 
 @Composable
 fun ScreenContent(modifier: Modifier, context: Context) {
-    var mieAyam by remember { mutableStateOf(0) }
-    var mieBakso by remember { mutableStateOf(0) }
-    var kerupuk by remember { mutableStateOf(0) }
-    var esTeh by remember { mutableStateOf(0) }
-    var totalPrice by remember { mutableStateOf(0) }
+    var mieAyam by rememberSaveable { mutableStateOf(0) }
+    var mieBakso by rememberSaveable { mutableStateOf(0) }
+    var kerupuk by rememberSaveable { mutableStateOf(0) }
+    var esTeh by rememberSaveable { mutableStateOf(0) }
+    var totalPrice by rememberSaveable { mutableStateOf(0) }
     var errorMessage by remember { mutableStateOf("") }
-    var isOrderClicked by remember { mutableStateOf(false) }
+    var isOrderClicked by rememberSaveable { mutableStateOf(false) }
 
 
     LazyColumn(

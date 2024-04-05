@@ -24,12 +24,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -70,6 +72,9 @@ fun ScreenContent(modifier: Modifier) {
     var mieBakso by remember { mutableStateOf(0) }
     var kerupuk by remember { mutableStateOf(0) }
     var esTeh by remember { mutableStateOf(0) }
+    var totalPrice by remember { mutableStateOf(0) }
+    var errorMessage by remember { mutableStateOf("") }
+    var isOrderClicked by remember { mutableStateOf(false) }
 
     LazyColumn(
         modifier = modifier.padding(16.dp)
@@ -147,6 +152,84 @@ fun ScreenContent(modifier: Modifier) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            // Buttons Row
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                // Order Button
+                var showErrorMessage by remember { mutableStateOf(false) }
+                Button(
+                    onClick = {
+                        if (mieAyam == 0 && mieBakso == 0 && esTeh == 0 && kerupuk == 0) {
+                            showErrorMessage = true
+                        } else {
+                            // Jika minimal satu menu telah dipilih, hitung total harga dan ubah status isOrderClicked
+                            totalPrice = calculateTotalPrice(mieAyam, mieBakso, esTeh, kerupuk)
+                            isOrderClicked = true
+                        }
+                    },
+                    modifier = Modifier.padding(top = 8.dp),
+                    contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.bayar),
+                        fontSize = 14.sp)
+                }
+
+                Spacer(modifier = Modifier.width(18.dp))
+                if (showErrorMessage) {
+                    errorMessage = stringResource(id = R.string.feedback)
+                }
+
+                // Reset Button
+                Button(
+                    onClick = {
+                        mieAyam = 0
+                        mieBakso = 0
+                        kerupuk = 0
+                        esTeh = 0
+                        totalPrice = 0
+                        isOrderClicked = false
+                        errorMessage = ""
+                        showErrorMessage = false
+                    },
+                    modifier = Modifier.padding(top = 8.dp),
+                    contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.reset))
+                    }
+                }
+                Column( modifier = Modifier
+                    .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Error Message
+                    if (errorMessage.isNotBlank()) {
+                        Text(
+                            text = errorMessage,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
+
+                    // Total Price
+                    Spacer(modifier = Modifier.height(16.dp))
+                    if (isOrderClicked) {
+                        Text(
+                            text = stringResource(id = R.string.total_price, totalPrice),
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            style = MaterialTheme.typography.displaySmall,
+                            textAlign = TextAlign.Center, // Menengahkan teks
+                            fontSize = 20.sp // Mengatur ukuran font
+                        )
+                        Divider()
+
+                    }
+                }
         }
     }
 }
@@ -222,7 +305,13 @@ fun ItemCard(
     }
 }
 
-@Preview(showBackground = true)
+
+private fun calculateTotalPrice(mieAyam: Int, mieBakso: Int, esTeh: Int, kerupuk: Int): Int {
+    return (mieAyam * 10000) + (mieBakso * 12000) + (esTeh * 3000) + (kerupuk * 2000)
+}
+
+
+    @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Assessment1Theme {

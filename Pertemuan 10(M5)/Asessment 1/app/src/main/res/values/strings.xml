@@ -10,4 +10,8 @@
     <string name="es_teh_price">Rp %1$.0f</string>
     <string name="kerupukk">Kerupuk</string>
     <string name="kerupuk_price">Rp %1$.0f</string>
+    <string name="bayar">Bayar</string>
+    <string name="feedback">Silahkan pilih Menu</string>
+    <string name="reset">Reset</string>
+    <string name="total_price">Silakan bayar: Rp %1$d</string>
 </resources>

@@ -1,5 +1,7 @@
 package org.d3if3002.assessment1.ui.screen
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,11 +26,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -43,6 +45,7 @@ import org.d3if3002.assessment1.ui.theme.Assessment1Theme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -62,12 +65,12 @@ fun MainScreen() {
             )
         }
     ) {padding ->
-        ScreenContent(Modifier.padding(padding))
+        ScreenContent(Modifier.padding(padding), context)
     }
 }
 
 @Composable
-fun ScreenContent(modifier: Modifier) {
+fun ScreenContent(modifier: Modifier, context: Context) {
     var mieAyam by remember { mutableStateOf(0) }
     var mieBakso by remember { mutableStateOf(0) }
     var kerupuk by remember { mutableStateOf(0) }
@@ -227,7 +230,23 @@ fun ScreenContent(modifier: Modifier) {
                             fontSize = 20.sp // Mengatur ukuran font
                         )
                         Divider()
-
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(
+                            onClick = {
+                                shareData(
+                                    context,
+                                    mieAyam,
+                                    mieBakso,
+                                    esTeh,
+                                    kerupuk,
+                                    totalPrice
+                                )
+                            },
+                            modifier = Modifier.padding(top = 8.dp),
+                            contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+                        ) {
+                            Text(text = stringResource(id = R.string.share))
+                        }
                     }
                 }
         }
@@ -308,6 +327,24 @@ fun ItemCard(
 
 private fun calculateTotalPrice(mieAyam: Int, mieBakso: Int, esTeh: Int, kerupuk: Int): Int {
     return (mieAyam * 10000) + (mieBakso * 12000) + (esTeh * 3000) + (kerupuk * 2000)
+}
+
+fun shareData(context: Context, mieAyam: Int, mieBakso: Int, esTeh: Int, kerupuk: Int, totalPrice: Int) {
+    val message = buildString {
+        append("Detail Pesanan:\n")
+        append("Mie Ayam: $mieAyam porsi\n")
+        append("Mie Bakso: $mieBakso porsi\n")
+        append("Es Teh: $esTeh gelas\n")
+        append("Kerupuk: $kerupuk piring\n")
+        append("Total Pembelian: Rp$totalPrice")
+    }
+
+    val shareIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, message)
+        type = "text/plain"
+    }
+    context.startActivity(Intent.createChooser(shareIntent, "Bagikan Pesanan Melalui"))
 }
 
 

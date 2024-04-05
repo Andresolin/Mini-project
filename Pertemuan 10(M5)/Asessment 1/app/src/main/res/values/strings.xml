@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Miayamee</string>
     <string name="logo">Logo Mie Ayam</string>
+    <string name="intro">Ayo hitung total pembayaran di warung Miayamee menggunakan aplikasi ini</string>
+    <string name="mie_ayam">Mie Ayam</string>
+    <string name="mie_ayam_price">Rp %1$.0f</string>
+    <string name="mie_bakso">Mie Bakso</string>
+    <string name="mie_bakso_price">Rp %1$.0f</string>
+    <string name="es_teh">Es Teh</string>
+    <string name="es_teh_price">Rp %1$.0f</string>
+    <string name="kerupukk">Kerupuk</string>
+    <string name="kerupuk_price">Rp %1$.0f</string>
 </resources>
